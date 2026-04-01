@@ -11,7 +11,7 @@
   <script>
     async function loadData() {
       try {
-        const res = await fetch('dashboard.json');
+        const res = await fetch(`dashboard.json?t=${Date.now()}`);
         const data = await res.json();
 
         document.getElementById('content').innerHTML = `
