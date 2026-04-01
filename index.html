@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trading Dashboard</title>
+</head>
+<body>
+  <h1>📊 Trading Dashboard</h1>
+
+  <div id="content">Loading...</div>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch('dashboard.json');
+        const data = await res.json();
+
+        document.getElementById('content').innerHTML = `
+          <p><b>Last Updated:</b> ${data.timestamp}</p>
+          <p><b>Account Value:</b> $${data.account_value}</p>
+
+          <h3>Positions</h3>
+          <pre>${JSON.stringify(data.positions, null, 2)}</pre>
+
+          <h3>Recent Trades</h3>
+          <pre>${JSON.stringify(data.recent_trades, null, 2)}</pre>
+        `;
+      } catch (err) {
+        document.getElementById('content').innerText = "Waiting for data...";
+      }
+    }
+
+    loadData();
+    setInterval(loadData, 5000);
+  </script>
+</body>
+</html>
