@@ -1,10 +1,13 @@
 {
-  "timestamp": "initial test",
-  "account_value": 1000000,
-  "positions": [
-    {"symbol": "EURUSD", "qty": -9260}
-  ],
+  "timestamp": "2026-04-01T18:57:45Z",
+  "account_value": null,
+  "positions": [],
   "recent_trades": [
-    {"symbol": "EURUSD", "side": "SELL", "qty": 9260, "price": 1.15668}
+    {
+      "symbol": "EUR/USD.IDEALPRO",
+      "side": "sell",
+      "quantity": 9260.0,
+      "price": 1.15668
+    }
   ]
 }
