@@ -1,0 +1,10 @@
+{
+  "timestamp": "initial test",
+  "account_value": 1000000,
+  "positions": [
+    {"symbol": "EURUSD", "qty": -9260}
+  ],
+  "recent_trades": [
+    {"symbol": "EURUSD", "side": "SELL", "qty": 9260, "price": 1.15668}
+  ]
+}
