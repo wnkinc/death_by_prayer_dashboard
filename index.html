@@ -87,65 +87,82 @@
     <h3>Recent Trades</h3>
     <div id="trades"></div>
   </div>
+<script>
+  const STARTING_BALANCE = 1000000;
 
-  <script>
-    const STARTING_BALANCE = 1000000; // adjust if needed
+  let lastAccountValue = null;
 
-    async function loadData() {
-      try {
-        const res = await fetch(`dashboard.json?t=${Date.now()}`);
-        const data = await res.json();
+  async function loadData() {
+    try {
+      const res = await fetch(`dashboard.json?t=${Date.now()}`);
+      const data = await res.json();
 
-        // ---- Status / heartbeat ----
-        document.getElementById("status").innerHTML =
-          `🟢 Running | Last update: ${data.timestamp}`;
+      // ---- Status / heartbeat ----
+      document.getElementById("status").innerHTML =
+        `🟢 Running | Last update: ${data.timestamp}`;
 
-        // ---- Account ----
-        const account = data.account_value ?? 0;
-        document.getElementById("account").innerText =
+      // ---- Account ----
+      if (data.account_value != null) {
+        lastAccountValue = data.account_value;
+      }
+
+      const account = lastAccountValue;
+      const accountEl = document.getElementById("account");
+
+      if (account == null) {
+        accountEl.innerText = "Loading...";
+      } else {
+        accountEl.innerText =
           `$${account.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
+      }
 
-        // ---- PnL ----
+      // ---- PnL ----
+      const pnlEl = document.getElementById("pnl");
+
+      if (account == null) {
+        pnlEl.innerText = "Loading...";
+        pnlEl.className = "value";
+      } else {
         const pnl = account - STARTING_BALANCE;
-        const pnlEl = document.getElementById("pnl");
         pnlEl.innerText =
           `$${pnl.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
         pnlEl.className = "value " + (pnl >= 0 ? "green" : "red");
-
-        // ---- Positions ----
-        const posEl = document.getElementById("positions");
-        if (!data.positions || data.positions.length === 0) {
-          posEl.innerText = "None";
-        } else {
-          posEl.innerText = data.positions.map(p => {
-            const side = p.quantity > 0 ? "Long" : "Short";
-            return `${p.symbol}: ${side} ${Math.abs(p.quantity)}`;
-          }).join(" | ");
-        }
-
-        // ---- Trades ----
-        const tradesEl = document.getElementById("trades");
-        tradesEl.innerHTML = "";
-
-        (data.recent_trades || []).forEach(t => {
-          const div = document.createElement("div");
-          div.className = "trade " + (t.side === "buy" ? "buy" : "sell");
-
-          div.innerText =
-            `${t.side.toUpperCase()} ${t.symbol} ` +
-            `${t.quantity.toLocaleString()} @ ${t.price}`;
-
-          tradesEl.appendChild(div);
-        });
-
-      } catch (err) {
-        document.getElementById("status").innerText =
-          "⚠️ Waiting for data...";
       }
-    }
 
-    loadData();
-    setInterval(loadData, 5000);
-  </script>
+      // ---- Positions ----
+      const posEl = document.getElementById("positions");
+      if (!data.positions || data.positions.length === 0) {
+        posEl.innerText = "None";
+      } else {
+        posEl.innerText = data.positions.map(p => {
+          const side = p.quantity > 0 ? "Long" : "Short";
+          return `${p.symbol}: ${side} ${Math.abs(p.quantity).toLocaleString()}`;
+        }).join(" | ");
+      }
+
+      // ---- Trades ----
+      const tradesEl = document.getElementById("trades");
+      tradesEl.innerHTML = "";
+
+      (data.recent_trades || []).forEach(t => {
+        const div = document.createElement("div");
+        div.className = "trade " + (t.side === "buy" ? "buy" : "sell");
+
+        div.innerText =
+          `${t.side.toUpperCase()} ${t.symbol} ` +
+          `${t.quantity.toLocaleString()} @ ${t.price}`;
+
+        tradesEl.appendChild(div);
+      });
+
+    } catch (err) {
+      document.getElementById("status").innerText =
+        "⚠️ Waiting for data...";
+    }
+  }
+
+  loadData();
+  setInterval(loadData, 5000);
+</script>
 </body>
 </html>
