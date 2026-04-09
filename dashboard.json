@@ -1,8 +1,19 @@
 {
-  "timestamp": "2026-04-09T19:29:01Z",
-  "account_value": 1003812.17,
-  "positions": [],
+  "timestamp": "2026-04-09T19:31:00Z",
+  "account_value": 1003808.17,
+  "positions": [
+    {
+      "symbol": "EUR/USD.IDEALPRO",
+      "quantity": 9260.0
+    }
+  ],
   "recent_trades": [
+    {
+      "symbol": "EUR/USD.IDEALPRO",
+      "side": "buy",
+      "quantity": 9260.0,
+      "price": 1.17045
+    },
     {
       "symbol": "EUR/USD.IDEALPRO",
       "side": "sell",
@@ -56,12 +67,6 @@
       "side": "sell",
       "quantity": 4009.0,
       "price": 1.17093
-    },
-    {
-      "symbol": "EUR/USD.IDEALPRO",
-      "side": "buy",
-      "quantity": 9260.0,
-      "price": 1.1713
     }
   ]
 }
